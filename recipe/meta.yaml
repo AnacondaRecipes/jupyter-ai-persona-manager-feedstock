@@ -1,9 +1,9 @@
-context:
-  version: "0.0.11"
+{% set name = "jupyter-ai-persona-manager" %}
+{% set version = "0.0.11" %}
 
 package:
-  name: jupyter-ai-persona-manager
-  version: ${{ version }}
+  name: {{ name|lower }}
+  version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/j/jupyter-ai-persona-manager/jupyter_ai_persona_manager-${{ version }}.tar.gz
