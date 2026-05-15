@@ -1,0 +1,68 @@
+{% set name = "jupyter-ai-persona-manager" %}
+{% set version = "0.0.11" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-','_') }}-{{ version }}.tar.gz
+  sha256: d2386cf2132e5942b67476521816de34a7e35584f7b9a3cf52d0371f647e1aba
+
+build:
+  skip: true  # [py<39]
+  number: 0
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+
+requirements:
+  host:
+    - python
+    - pip
+    - hatchling >=1.5.0
+    - jupyterlab >=4.0.0,<5
+    - hatch-nodejs-version >=0.3.2
+    - hatch-jupyter-builder >=0.5
+  run:
+    - python
+    - jupyter_server >=2.4.0,<3
+    - jupyter_server_fileid >=0.9.0
+    - jupyterlab-chat >=0.19.0
+    - pycrdt >=0.10.0
+    - pydantic >=2.0.0
+    - importlib-metadata >=4.0.0
+    - jupyter-ai-router >=0.0.4a0
+  run_constrained:
+    - jupyterlab >=4.0.0,<5
+
+test:
+  imports:
+    - jupyter_ai_persona_manager
+  requires:
+    - pip
+  commands:
+    - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+
+about:
+  home: https://github.com/jupyter-ai-contrib/jupyter-ai-persona-manager
+  summary: The core manager and registry for AI personas in Jupyter AI
+  description: |
+    This package provides the foundational infrastructure for managing AI personas
+    in Jupyter AI chat environments. It includes:
+    - BasePersona: Abstract base class for creating custom AI personas
+    - PersonaManager: Registry and lifecycle management for personas
+    - PersonaAwareness: Awareness integration for multi-user chat environments
+    - Entry Point Support: Automatic discovery of personas via Python entry points
+    AI personas are analogous to "bots" in other chat applications, allowing different
+    AI assistants to coexist in the same chat environment. Each persona can have unique
+    behavior, models, and capabilities.
+  license: BSD-3-Clause
+  license_family: BSD
+  license_file: LICENSE
+  dev_url: https://github.com/jupyter-ai-contrib/jupyter-ai-persona-manager
+  doc_url: https://jupyter-ai.readthedocs.io
+
+extra:
+  recipe-maintainers:
+    - dlqqq
+    - andrii-i
